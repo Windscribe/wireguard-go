@@ -17,7 +17,7 @@ import (
 
 	"github.com/windscribe/wireguard-go/device"
 	"github.com/windscribe/wireguard-go/ipc"
-	"golang.zx2c4.com/wireguard/tun"
+	"github.com/windscribe/wireguard-go/tun"
 )
 
 const (

@@ -6,7 +6,6 @@
 package device
 
 import (
-	"runtime"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -296,10 +295,10 @@ func NewDevice(tunDevice tun.Device, logger *Logger) *Device {
 
 	// start workers
 
-	cpus := runtime.NumCPU()
+	cpus := 2 //dont bring up too many routines, it just creates socket contention
 	device.state.starting.Wait()
 	device.state.stopping.Wait()
-	for i := 0; i < cpus; i += 1 {
+	for i := 0; i < cpus; i++ {
 		device.state.starting.Add(3)
 		device.state.stopping.Add(3)
 		go device.RoutineEncryption()

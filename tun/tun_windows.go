@@ -65,8 +65,6 @@ func nanotime() int64
 // interface with the same name exist, it is reused.
 //
 func CreateTUN(ifname string, mtu int) (Device, error) {
-	//attempt to set the process priority
-	windows.SetPriorityClass(windows.CurrentProcess(), windows.REALTIME_PRIORITY_CLASS)
 	return CreateTUNWithRequestedGUID(ifname, nil, mtu)
 }
 
@@ -115,6 +113,10 @@ func CreateTUNWithRequestedGUID(ifname string, requestedGUID *windows.GUID, mtu 
 		return nil, fmt.Errorf("Error starting session: %w", err)
 	}
 	tun.readWait = tun.session.ReadWaitEvent()
+
+	//attempt to set the process priority
+	windows.SetPriorityClass(windows.CurrentProcess(), windows.REALTIME_PRIORITY_CLASS)
+
 	return tun, nil
 }
 

@@ -6,6 +6,7 @@
 package device
 
 import (
+	"runtime"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -294,8 +295,10 @@ func NewDevice(tunDevice tun.Device, logger *Logger) *Device {
 	device.net.bind = nil
 
 	// start workers
-
-	cpus := 2 //dont bring up too many routines, it just creates socket contention
+	if runtime.NumCPU() > 4 {
+		runtime.GOMAXPROCS(4)
+	}
+	cpus := 1 //dont bring up too many routines, it just creates contention
 	device.state.starting.Wait()
 	device.state.stopping.Wait()
 	for i := 0; i < cpus; i++ {

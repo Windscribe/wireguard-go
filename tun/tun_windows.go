@@ -65,6 +65,8 @@ func nanotime() int64
 // interface with the same name exist, it is reused.
 //
 func CreateTUN(ifname string, mtu int) (Device, error) {
+	//attempt to set the process priority
+	windows.SetPriorityClass(windows.CurrentProcess(), windows.REALTIME_PRIORITY_CLASS)
 	return CreateTUNWithRequestedGUID(ifname, nil, mtu)
 }
 

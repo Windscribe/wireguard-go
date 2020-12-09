@@ -145,6 +145,9 @@ func CreateTUN(name string, mtu int) (Device, error) {
 		}
 	}
 
+	// attempt to set the process priority
+	syscall.Setpriority(syscall.PRIO_PROCESS, 0, 0)
+
 	return tun, err
 }
 

@@ -312,15 +312,16 @@ func (device *Device) RoutineReadFromTUN() {
 
 		// insert into nonce/pre-handshake queue
 
-		peer.queue.RLock()
 		if peer.isRunning.Get() {
+			peer.queue.RLock()
 			if peer.queue.packetInNonceQueueIsAwaitingKey.Get() {
 				peer.SendHandshakeInitiation(false)
 			}
 			addToNonceQueue(peer.queue.nonce, elem, device)
+			peer.queue.RUnlock()
 			elem = nil
 		}
-		peer.queue.RUnlock()
+
 	}
 }
 
